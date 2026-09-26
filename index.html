@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>3D Science Library — Class 10</title>
+
+<meta name="description"
+content="Interactive Class 10 Science 3D learning library">
+
+<script type="module"
+src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+</script>
+
+<style>
+:root{
+  --bg:#070b14;
+  --panel:#0e1625;
+  --panel2:#121d30;
+  --text:#f8fafc;
+  --muted:#94a3b8;
+  --line:#243047;
+  --purple:#7c3aed;
+  --cyan:#06b6d4;
+  --pink:#ec4899;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  min-height:100vh;
+  color:var(--text);
+  font-family:Inter,system-ui,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 10% 0%,#39207855,transparent 28%),
+    radial-gradient(circle at 90% 5%,#07598544,transparent 25%),
+    var(--bg);
+}
+
+button,input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:#070b14dd;
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line);
+}
+
+nav{
+  max-width:1250px;
+  margin:auto;
+  padding:14px 18px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.logo{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  font-size:21px;
+  background:linear-gradient(
+    135deg,
+    var(--purple),
+    var(--cyan)
+  );
+  box-shadow:0 0 25px #7c3aed55;
+}
+
+.search{
+  flex:1;
+  position:relative;
+}
+
+.search input{
+  width:100%;
+  padding:12px 15px 12px 42px;
+  border-radius:13px;
+  border:1px solid var(--line);
+  background:#ffffff08;
+  color:white;
+  outline:none;
+}
+
+.search input:focus{
+  border-color:#8b5cf6;
+  box-shadow:0 0 0 3px #7c3aed22;
+}
+
+.search span{
+  position:absolute;
+  left:14px;
+  top:10px;
+  color:var(--muted);
+}
+
+.btn{
+  padding:10px 14px;
+  border-radius:11px;
+  border:1px solid var(--line);
+  color:white;
+  background:#ffffff09;
+  font-weight:750;
+}
+
+.btn.primary{
+  border:0;
+  background:
+    linear-gradient(
+      135deg,
+      var(--purple),
+      #4f46e5
+    );
+}
+
+.hidden{
+  display:none!important;
+}
+
+main{
+  max-width:1250px;
+  margin:auto;
+  padding:30px 18px 70px;
+}
+
+.hero{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:28px;
+  align-items:center;
+  padding:38px 0;
+}
+
+.badge{
+  display:inline-block;
+  padding:7px 12px;
+  border-radius:30px;
+  border:1px solid #8b5cf655;
+  background:#8b5cf611;
+  color:#c4b5fd;
+  font-size:12px;
+  font-weight:800;
+}
+
+h1{
+  font-size:clamp(42px,6vw,72px);
+  line-height:.98;
+  letter-spacing:-3px;
+  margin:18px 0;
+}
+
+.gradient{
+  background:
+    linear-gradient(
+      90deg,
+      #a78bfa,
+      #22d3ee,
+      #f472b6
+    );
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.hero p{
+  color:var(--muted);
+  line-height:1.7;
+  max-width:650px;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:23px;
+}
+
+.hero3d{
+  height:360px;
+  overflow:hidden;
+  border-radius:28px;
+  border:1px solid var(--line);
+  background:#0b1220;
+  box-shadow:0 25px 70px #0007;
+}
+
+model-viewer{
+  width:100%;
+  height:100%;
+  background:transparent;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:
+    repeat(4,1fr);
+  gap:12px;
+  margin:10px 0 38px;
+}
+
+.stat{
+  padding:18px;
+  border-radius:18px;
+  border:1px solid var(--line);
+  background:#ffffff06;
+}
+
+.stat strong{
+  font-size:27px;
+}
+
+.stat span{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin-top:5px;
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  margin-bottom:18px;
+}
+
+.section-head h2{
+  font-size:28px;
+}
+
+.section-head p{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:5px;
+}
+
+.filters{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:18px;
+}
+
+.filter{
+  padding:8px 14px;
+  border-radius:30px;
+  border:1px solid var(--line);
+  color:#cbd5e1;
+  background:#ffffff06;
+}
+
+.filter.active{
+  color:white;
+  border-color:#8b5cf6;
+  background:#7c3aed33;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:
+    repeat(3,1fr);
+  gap:17px;
+}
+
+.card{
+  overflow:hidden;
+  border-radius:19px;
+  border:1px solid var(--line);
+  background:#ffffff06;
+  transition:.2s;
+}
+
+.card:hover{
+  transform:translateY(-4px);
+  border-color:#8b5cf655;
+}
+
+.thumb{
+  height:190px;
+  position:relative;
+  background:#0b1220;
+}
+
+.tag{
+  position:absolute;
+  z-index:3;
+  top:10px;
+  left:10px;
+  padding:5px 9px;
+  border-radius:8px;
+  background:#070b14dd;
+  border:1px solid var(--line);
+  font-size:11px;
+}
+
+.card-body{
+  padding:16px;
+}
+
+.card-body h3{
+  margin-bottom:7px;
+}
+
+.card-body p{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.meta{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:14px;
+}
+
+.small{
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* MODAL */
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:none;
+  place-items:center;
+  padding:16px;
+  background:#000b;
+  backdrop-filter:blur(8px);
+}
+
+.modal.show{
+  display:grid;
+}
+
+.modal-box{
+  width:min(1050px,100%);
+  max-height:92vh;
+  overflow:auto;
+  padding:20px;
+  border-radius:22px;
+  border:1px solid var(--line);
+  background:#0c1422;
+}
+
+.close{
+  float:right;
+  padding:7px 10px;
+  color:white;
+  background:#ffffff09;
+  border:1px solid var(--line);
+  border-radius:9px;
+}
+
+.viewer{
+  height:520px;
+  overflow:hidden;
+  margin-top:16px;
+  border-radius:16px;
+  background:#070b14;
+}
+
+/* FORM */
+
+.form{
+  width:min(420px,100%);
+  margin:25px auto;
+}
+
+.form h2{
+  text-align:center;
+  margin-bottom:18px;
+}
+
+.form input,
+.form select,
+.form textarea{
+  width:100%;
+  padding:12px;
+  margin:7px 0;
+  color:white;
+  background:#0a1220;
+  border:1px solid var(--line);
+  border-radius:10px;
+  outline:none;
+}
+
+.form button{
+  width:100%;
+  margin-top:8px;
+}
+
+.message{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  margin-top:10px;
+}
+
+/* ADMIN */
+
+.admin-grid{
+  display:grid;
+  grid-template-columns:
+    repeat(3,1fr);
+  gap:12px;
+}
+
+.admin-card{
+  padding:17px;
+  border-radius:17px;
+  border:1px solid var(--line);
+  background:#ffffff06;
+}
+
+.admin-card strong{
+  font-size:27px;
+}
+
+.admin-card span{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin-top:5px;
+}
+
+.admin-section{
+  margin-top:20px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+}
+
+footer{
+  padding:28px;
+  text-align:center;
+  color:var(--muted);
+  border-top:1px solid var(--line);
+}
+
+@media(max-width:850px){
+
+  .hero{
+    grid-template-columns:1fr;
+  }
+
+  .grid{
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+
+  .stats{
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+}
+
+@media(max-width:560px){
+
+  nav .brand span{
+    display:none;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero3d{
+    height:280px;
+  }
+
+  .viewer{
+    height:380px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<nav>
+
+<div class="brand">
+  <div class="logo">🧬</div>
+  <span>3D Science Library</span>
+</div>
+
+<div class="search">
+  <span>🔎</span>
+
+  <input
+    id="search"
+    placeholder="Search diagrams, chapters..."
+    oninput="renderModels()">
+</div>
+
+<button
+  id="authButton"
+  class="btn"
+  onclick="openAuth()">
+  Login
+</button>
+
+<button
+  id="adminButton"
+  class="btn primary hidden"
+  onclick="openAdmin()">
+  Admin
+</button>
+
+</nav>
+
+</header>
+
+
+<main>
+
+<section class="hero">
+
+<div>
+
+<span class="badge">
+CLASS 10 • INTERACTIVE SCIENCE
+</span>
+
+<h1>
+Science को<br>
+<span class="gradient">
+3D में समझो.
+</span>
+</h1>
+
+<p>
+Physics, Chemistry और Biology के concepts
+को interactive 3D models, diagrams और
+study resources के साथ explore करो।
+</p>
+
+<div class="actions">
+
+<button
+class="btn primary"
+onclick="scrollToLibrary()">
+Explore 3D Library →
+</button>
+
+<button
+class="btn"
+onclick="openAuth()">
+Create Account
+</button>
+
+</div>
+
+</div>
+
+
+<div class="hero3d">
+
+<model-viewer
+src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+camera-controls
+auto-rotate
+shadow-intensity="1"
+alt="3D Science Model">
+</model-viewer>
+
+</div>
+
+</section>
+
+
+<section class="stats">
+
+<div class="stat">
+<strong id="modelCount">0</strong>
+<span>3D Models</span>
+</div>
+
+<div class="stat">
+<strong id="pdfCount">0</strong>
+<span>PDF Resources</span>
+</div>
+
+<div class="stat">
+<strong>3</strong>
+<span>Subjects</span>
+</div>
+
+<div class="stat">
+<strong>11–12</strong>
+<span>Coming Later</span>
+</div>
+
+</section>
+
+
+<section id="library">
+
+<div class="section-head">
+
+<div>
+<h2>Explore 3D Library</h2>
+<p>Class 10 Science</p>
+</div>
+
+</div>
+
+
+<div class="filters">
+
+<button
+class="filter active"
+onclick="setFilter('All',this)">
+All
+</button>
+
+<button
+class="filter"
+onclick="setFilter('Physics',this)">
+⚡ Physics
+</button>
+
+<button
+class="filter"
+onclick="setFilter('Chemistry',this)">
+🧪 Chemistry
+</button>
+
+<button
+class="filter"
+onclick="setFilter('Biology',this)">
+🧬 Biology
+</button>
+
+</div>
+
+
+<div
+id="modelGrid"
+class="grid">
+</div>
+
+</section>
+
+</main>
+
+
+<footer>
+© 2026 3D Science Library •
+Class 10 → Class 11 → Class 12
+</footer>
+
+
+<!-- VIEWER -->
+
+<div
+id="viewerModal"
+class="modal">
+
+<div class="modal-box">
+
+<button
+class="close"
+onclick="closeModal('viewerModal')">
+✕
+</button>
+
+<div id="viewerContent"></div>
+
+</div>
+
+</div>
+
+
+<!-- LOGIN -->
+
+<div
+id="authModal"
+class="modal">
+
+<div class="modal-box">
+
+<button
+class="close"
+onclick="closeModal('authModal')">
+✕
+</button>
+
+<div class="form">
+
+<h2 id="authTitle">
+🔐 Login
+</h2>
+
+<input
+id="email"
+type="email"
+placeholder="Email">
+
+<input
+id="password"
+type="password"
+placeholder="Password">
+
+<button
+class="btn primary"
+onclick="submitAuth()">
+Continue
+</button>
+
+<p
+id="authMessage"
+class="message">
+</p>
+
+<button
+class="btn"
+onclick="toggleAuth()">
+Switch Login / Signup
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ADMIN -->
+
+<div
+id="adminModal"
+class="modal">
+
+<div class="modal-box">
+
+<button
+class="close"
+onclick="closeModal('adminModal')">
+✕
+</button>
+
+<h2>👑 Admin Dashboard</h2>
+
+<p
+class="message"
+style="text-align:left">
+Manage your 3D models, PDFs and users.
+</p>
+
+
+<div class="admin-grid">
+
+<div class="admin-card">
+<strong id="adminModels">
+0
+</strong>
+<span>3D Models</span>
+</div>
+
+<div class="admin-card">
+<strong id="adminPDFs">
+0
+</strong>
+<span>PDFs</span>
+</div>
+
+<div class="admin-card">
+<strong id="adminUsers">
+0
+</strong>
+<span>Users</span>
+</div>
+
+</div>
+
+
+<div class="admin-section">
+
+<h3>Add 3D Model</h3>
+
+<form
+class="form"
+style="max-width:none"
+onsubmit="addModel(event)">
+
+<input
+name="title"
+placeholder="Model title"
+required>
+
+<input
+name="subject"
+placeholder="Physics / Chemistry / Biology"
+required>
+
+<input
+name="chapter"
+placeholder="Chapter"
+required>
+
+<input
+name="modelUrl"
+placeholder="/media/model/example.glb"
+required>
+
+<button
+class="btn primary">
+Add Model
+</button>
+
+</form>
+
+</div>
+
+
+<div class="admin-section">
+
+<h3>Upload PDF / 3D Model</h3>
+
+<form
+id="uploadForm"
+class="form"
+style="max-width:none"
+onsubmit="uploadFile(event)">
+
+<input
+name="kind"
+value="pdf"
+placeholder="pdf or model"
+required>
+
+<input
+name="title"
+placeholder="Title"
+required>
+
+<input
+name="chapter"
+placeholder="Chapter"
+required>
+
+<input
+name="file"
+type="file"
+required>
+
+<button
+class="btn primary">
+Upload
+</button>
+
+</form>
+
+<p
+id="uploadMessage"
+class="message">
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+let models=[];
+
+let currentFilter="All";
+
+let signupMode=false;
+
+
+/* DEMO FALLBACK MODELS */
+
+const fallbackModels=[
+
+{
+ id:1,
+ title:"Human Eye",
+ subject:"Biology",
+ chapter:"The Human Eye and the Colourful World",
+ modelUrl:"https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+},
+
+{
+ id:2,
+ title:"Human Heart",
+ subject:"Biology",
+ chapter:"Life Processes",
+ modelUrl:"https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+},
+
+{
+ id:3,
+ title:"Electric Circuit",
+ subject:"Physics",
+ chapter:"Electricity",
+ modelUrl:"https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+},
+
+{
+ id:4,
+ title:"Ray Diagram",
+ subject:"Physics",
+ chapter:"Light – Reflection and Refraction",
+ modelUrl:"https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+},
+
+{
+ id:5,
+ title:"Magnetic Field",
+ subject:"Physics",
+ chapter:"Magnetic Effects of Electric Current",
+ modelUrl:"https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+},
+
+{
+ id:6,
+ title:"Carbon Structure",
+ subject:"Chemistry",
+ chapter:"Carbon and Its Compounds",
+ modelUrl:"https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+},
+
+{
+ id:7,
+ title:"Chemical Reaction",
+ subject:"Chemistry",
+ chapter:"Chemical Reactions and Equations",
+ modelUrl:"https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+}
+
+];
+
+
+/* ESCAPE HTML */
+
+function escapeHTML(value){
+
+ return String(value ?? "")
+ .replaceAll("&","&amp;")
+ .replaceAll("<","&lt;")
+ .replaceAll(">","&gt;")
+ .replaceAll('"',"&quot;")
+ .replaceAll("'","&#039;");
+
+}
+
+
+/* LOAD */
+
+async function loadLibrary(){
+
+ try{
+
+   const response=
+     await fetch("/api/models");
+
+   if(response.ok){
+
+     const data=
+       await response.json();
+
+     models=
+       data.models ||
+       fallbackModels;
+
+   }else{
+
+     models=fallbackModels;
+
+   }
+
+ }catch(error){
+
+   models=fallbackModels;
+
+ }
+
+ renderModels();
+
+ loadPDFCount();
+
+ checkUser();
+
+}
+
+
+/* RENDER */
+
+function renderModels(){
+
+ const query=
+   document
+   .getElementById("search")
+   .value
+   .toLowerCase();
+
+ const filtered=
+   models.filter(model=>{
+
+     const subjectMatch=
+       currentFilter==="All" ||
+       model.subject===currentFilter;
+
+     const searchMatch=
+       (
+         model.title+
+         " "+
+         model.subject+
+         " "+
+         model.chapter
+       )
+       .toLowerCase()
+       .includes(query);
+
+     return subjectMatch && searchMatch;
+
+   });
+
+
+ document
+ .getElementById("modelCount")
+ .textContent=models.length;
+
+
+ document
+ .getElementById("modelGrid")
+ .innerHTML=
+ filtered.length ?
+
+ filtered.map(model=>`
+
+ <article class="card">
+
+ <div class="thumb">
+
+ <span class="tag">
+ ${escapeHTML(model.subject)}
+ </span>
+
+ <model-viewer
+ src="${escapeHTML(model.modelUrl)}"
+ camera-controls
+ auto-rotate
+ shadow-intensity="1"
+ alt="${escapeHTML(model.title)}">
+ </model-viewer>
+
+ </div>
+
+ <div class="card-body">
+
+ <h3>
+ ${escapeHTML(model.title)}
+ </h3>
+
+ <p>
+ ${escapeHTML(model.chapter)}
+ </p>
+
+ <div class="meta">
+
+ <span class="small">
+ Interactive 3D
+ </span>
+
+ <button
+ class="btn primary"
+ onclick="openViewer(${model.id})">
+ Explore
+ </button>
+
+ </div>
+
+ </div>
+
+ </article>
+
+ `).join("")
+
+ :
+
+ `<div class="message">
+ No matching model found.
+ </div>`;
+
+}
+
+
+/* FILTER */
+
+function setFilter(filter,button){
+
+ currentFilter=filter;
+
+ document
+ .querySelectorAll(".filter")
+ .forEach(item=>
+   item.classList.remove("active")
+ );
+
+ button.classList.add("active");
+
+ renderModels();
+
+}
+
+
+/* VIEWER */
+
+function openViewer(id){
+
+ const model=
+   models.find(item=>item.id==id);
+
+ if(!model)return;
+
+ document
+ .getElementById("viewerContent")
+ .innerHTML=`
+
+ <h2>
+ ${escapeHTML(model.title)}
+ </h2>
+
+ <div class="viewer">
+
+ <model-viewer
+ src="${escapeHTML(model.modelUrl)}"
+ camera-controls
+ auto-rotate
+ shadow-intensity="1"
+ exposure="1.1"
+ alt="${escapeHTML(model.title)}">
+ </model-viewer>
+
+ </div>
+
+ <p
+ class="message"
+ style="text-align:left">
+
+ ${escapeHTML(model.subject)}
+ •
+ ${escapeHTML(model.chapter)}
+
+ <br><br>
+
+ Drag to rotate •
+ Pinch/scroll to zoom
+
+ </p>
+
+ `;
+
+ document
+ .getElementById("viewerModal")
+ .classList.add("show");
+
+}
+
+
+/* AUTH */
+
+function openAuth(){
+
+ document
+ .getElementById("authModal")
+ .classList.add("show");
+
+}
+
+
+function toggleAuth(){
+
+ signupMode=!signupMode;
+
+ document
+ .getElementById("authTitle")
+ .textContent=
+ signupMode
+ ? "📝 Create Account"
+ : "🔐 Login";
+
+ document
+ .getElementById("authMessage")
+ .textContent="";
+
+}
+
+
+async function submitAuth(){
+
+ const email=
+   document
+   .getElementById("email")
+   .value
+   .trim();
+
+ const password=
+   document
+   .getElementById("password")
+   .value;
+
+ const message=
+   document
+   .getElementById("authMessage");
+
+ if(!email || !password){
+
+   message.textContent=
+     "Email and password are required.";
+
+   return;
+
+ }
+
+ message.textContent="Please wait...";
+
+ try{
+
+   const response=
+     await fetch(
+       signupMode
+       ? "/api/auth/signup"
+       : "/api/auth/login",
+       {
+         method:"POST",
+         headers:{
+           "content-type":
+           "application/json"
+         },
+         body:JSON.stringify({
+           email,
+           password
+         })
+       }
+     );
+
+   const data=
+     await response.json();
+
+   if(!response.ok)
+     throw new Error(
+       data.error ||
+       "Authentication failed"
+     );
+
+   message.textContent=
+     "✓ "+
+     (data.message || "Success");
+
+   setTimeout(()=>{
+
+     closeModal("authModal");
+
+     checkUser();
+
+   },700);
+
+ }catch(error){
+
+   message.textContent=
+     "✕ "+
+     error.message;
+
+ }
+
+}
+
+
+/* CHECK USER */
+
+async function checkUser(){
+
+ try{
+
+   const response=
+     await fetch("/api/me");
+
+   if(!response.ok)
+     throw new Error();
+
+   const data=
+     await response.json();
+
+   const button=
+     document
+     .getElementById("authButton");
+
+   button.textContent="Logout";
+
+   button.onclick=logout;
+
+   if(data.user?.role==="admin"){
+
+     document
+     .getElementById("adminButton")
+     .classList
+     .remove("hidden");
+
+   }
+
+ }catch(error){
+
+   /* Not logged in */
+
+ }
+
+}
+
+
+/* LOGOUT */
+
+async function logout(){
+
+ await fetch(
+   "/api/auth/logout",
+   {method:"POST"}
+ );
+
+ location.reload();
+
+}
+
+
+/* ADMIN */
+
+async function openAdmin(){
+
+ document
+ .getElementById("adminModal")
+ .classList
+ .add("show");
+
+ try{
+
+   const response=
+     await fetch("/api/admin/stats");
+
+   const data=
+     await response.json();
+
+   if(response.ok){
+
+     document
+     .getElementById("adminModels")
+     .textContent=data.models;
+
+     document
+     .getElementById("adminPDFs")
+     .textContent=data.pdfs;
+
+     document
+     .getElementById("adminUsers")
+     .textContent=data.users;
+
+   }
+
+ }catch(error){}
+
+}
+
+
+/* ADD MODEL */
+
+async function addModel(event){
+
+ event.preventDefault();
+
+ const form=
+   new FormData(event.target);
+
+ const message=
+   document
+   .getElementById("uploadMessage");
+
+ try{
+
+   const response=
+     await fetch(
+       "/api/admin/models",
+       {
+         method:"POST",
+         headers:{
+           "content-type":
+           "application/json"
+         },
+         body:JSON.stringify(
+           Object.fromEntries(form)
+         )
+       }
+     );
+
+   const data=
+     await response.json();
+
+   if(!response.ok)
+     throw new Error(data.error);
+
+   message.textContent=
+     "✓ Model added.";
+
+   event.target.reset();
+
+   await loadLibrary();
+
+ }catch(error){
+
+   message.textContent=
+     "✕ "+
+     error.message;
+
+ }
+
+}
+
+
+/* UPLOAD */
+
+async function uploadFile(event){
+
+ event.preventDefault();
+
+ const form=
+   new FormData(event.target);
+
+ const message=
+   document
+   .getElementById("uploadMessage");
+
+ message.textContent=
+   "Uploading...";
+
+ try{
+
+   const response=
+     await fetch(
+       "/api/admin/upload",
+       {
+         method:"POST",
+         body:form
+       }
+     );
+
+   const data=
+     await response.json();
+
+   if(!response.ok)
+     throw new Error(data.error);
+
+   message.textContent=
+     "✓ Uploaded: "+
+     data.url;
+
+   event.target.reset();
+
+   loadPDFCount();
+
+ }catch(error){
+
+   message.textContent=
+     "✕ "+
+     error.message;
+
+ }
+
+}
+
+
+/* PDF COUNT */
+
+async function loadPDFCount(){
+
+ try{
+
+   const response=
+     await fetch("/api/pdfs");
+
+   if(!response.ok)return;
+
+   const data=
+     await response.json();
+
+   document
+   .getElementById("pdfCount")
+   .textContent=
+     data.pdfs?.length || 0;
+
+ }catch(error){}
+
+}
+
+
+/* CLOSE */
+
+function closeModal(id){
+
+ document
+ .getElementById(id)
+ .classList
+ .remove("show");
+
+}
+
+
+/* SCROLL */
+
+function scrollToLibrary(){
+
+ document
+ .getElementById("library")
+ .scrollIntoView({
+   behavior:"smooth"
+ });
+
+}
+
+
+/* MODAL OUTSIDE CLICK */
+
+window.onclick=function(event){
+
+ if(
+   event.target.classList
+   .contains("modal")
+ ){
+
+   event.target
+   .classList
+   .remove("show");
+
+ }
+
+};
+
+
+/* START */
+
+loadLibrary();
+
+</script>
+
+</body>
+</html>
